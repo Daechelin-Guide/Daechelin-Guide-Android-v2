@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_frame"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:layout_weight="3"
+    android:orientation="horizontal"
+    android:background="@drawable/widget_frame">
+
+    <ImageView
+        android:id="@+id/widget_img"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/violet_widget"
+        android:layout_marginVertical="15dp"
+        android:layout_marginStart="15dp"
+        />
+
+    <TextView
+        android:id="@+id/widget_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="20dp"
+        android:text="쇠고기야채죽,*모닝빵크래미샌드위치, 나박김치,허쉬초코크런치시리얼+우유,바나나"
+        android:gravity="center_vertical"
+        android:fontFamily="@font/pretendard_medium"
+        android:textSize="15sp"
+        android:textColor="@color/widget_textcolor"
+        />
+
+</LinearLayout>

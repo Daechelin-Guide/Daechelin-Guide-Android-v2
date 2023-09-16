@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.dgsw.guidedaechelin.presentation.features.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_mealFragment"
+            app:destination="@id/mealFragment"
+            app:enterAnim="@anim/anim_left_first"
+            app:exitAnim="@anim/anim_left_before"
+            app:popEnterAnim="@anim/anim_right_first"
+            app:popExitAnim="@anim/anim_right_before" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/anim_left_first"
+            app:exitAnim="@anim/anim_left_before"
+            app:popEnterAnim="@anim/anim_right_first"
+            app:popExitAnim="@anim/anim_right_before"/>
+        <action
+            android:id="@+id/action_homeFragment_to_rankingFragment"
+            app:destination="@id/rankingFragment"
+            app:enterAnim="@anim/anim_left_first"
+            app:exitAnim="@anim/anim_left_before"
+            app:popEnterAnim="@anim/anim_right_first"
+            app:popExitAnim="@anim/anim_right_before" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealFragment"
+        android:name="com.dgsw.guidedaechelin.presentation.features.meal.MealFragment"
+        android:label="MealFragment" >
+        <action
+            android:id="@+id/action_mealFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment"
+            app:enterAnim="@anim/anim_left_first"
+            app:exitAnim="@anim/anim_left_before"
+            app:popEnterAnim="@anim/anim_right_first"
+            app:popExitAnim="@anim/anim_right_before"/>
+        <argument
+            android:name="homeToMeal"
+            app:argType="com.dgsw.guidedaechelin.presentation.features.home.HomeToMealData" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.dgsw.guidedaechelin.presentation.features.review.ReviewFragment"
+        android:label="ReviewFragment" >
+        <argument
+            android:name="mealToReview"
+            app:argType="com.dgsw.guidedaechelin.presentation.features.meal.MealToReview" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.dgsw.guidedaechelin.presentation.features.setting.SettingFragment"
+        android:label="SettingFragment" >
+        <action
+            android:id="@+id/action_settingFragment_to_policyFragment"
+            app:destination="@id/policyFragment"
+            app:enterAnim="@anim/anim_left_first"
+            app:exitAnim="@anim/anim_left_before"
+            app:popEnterAnim="@anim/anim_right_first"
+            app:popExitAnim="@anim/anim_right_before"/>
+    </fragment>
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="com.dgsw.guidedaechelin.presentation.features.policy.PolicyFragment"
+        android:label="PolicyFragment" />
+    <fragment
+        android:id="@+id/rankingFragment"
+        android:name="com.dgsw.guidedaechelin.presentation.features.ranking.RankingFragment"
+        android:label="RankingFragment" >
+        <action
+            android:id="@+id/action_rankingFragment_to_mealFragment"
+            app:destination="@id/mealFragment"
+            app:enterAnim="@anim/anim_left_first"
+            app:exitAnim="@anim/anim_left_before"
+            app:popEnterAnim="@anim/anim_right_first"
+            app:popExitAnim="@anim/anim_right_before" />
+    </fragment>
+</navigation>

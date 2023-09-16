@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.dgsw.guidedaechelin.presentation.features.setting.SettingViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroud_grey">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/back_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/arrow__left"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginVertical="14dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="설정"
+
+                android:textSize="19dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/back_btn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+
+                android:background="@drawable/grey_line"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/change_school_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="학교 변경"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="18dp"
+            android:textColor="#333333"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_bar" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/change_school_btn"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/setting_frame"
+            android:elevation="5dp"
+            android:gravity="center_vertical"
+
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="대구소프트웨어마이스터고등학교"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/change_school_txt" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:background="@drawable/arrow_right"
+            android:elevation="6dp"
+
+            app:layout_constraintBottom_toBottomOf="@+id/change_school_btn"
+            app:layout_constraintEnd_toEndOf="@+id/change_school_btn"
+            app:layout_constraintTop_toTopOf="@+id/change_school_btn" />
+
+        <TextView
+            android:id="@+id/policy_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="개인정보 관리"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="18dp"
+            android:textColor="#333333"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/change_school_btn" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/policy_btn"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/setting_frame"
+            android:gravity="center_vertical"
+            android:elevation="5dp"
+
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="개인정보 처리방침"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/policy_txt" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:background="@drawable/arrow_right"
+            android:elevation="6dp"
+
+            app:layout_constraintBottom_toBottomOf="@+id/policy_btn"
+            app:layout_constraintEnd_toEndOf="@+id/policy_btn"
+            app:layout_constraintTop_toTopOf="@+id/policy_btn" />
+
+        <TextView
+            android:id="@+id/app_information_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="앱 정보"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="18dp"
+            android:textColor="#333333"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/policy_btn" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/version_btn"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/setting_frame"
+            android:gravity="center_vertical"
+            android:elevation="5dp"
+
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="현재 버전"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_information_txt" />
+
+        <TextView
+            android:id="@+id/version_txt"
+
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="2.0.0"
+            android:elevation="6dp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/pretendard_regular"
+            android:textSize="14dp"
+            android:textColor="#C52222"
+            android:layout_marginEnd="10dp"
+
+            app:layout_constraintBottom_toBottomOf="@+id/version_btn"
+            app:layout_constraintEnd_toEndOf="@+id/version_btn"
+            app:layout_constraintTop_toTopOf="@+id/version_btn" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/developer_btn"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/setting_frame"
+            android:gravity="center_vertical"
+            android:elevation="5dp"
+
+            android:fontFamily="@font/pretendard_medium"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="앱 개발자"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/version_btn" />
+
+        <TextView
+            android:id="@+id/developer_txt"
+
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="A급 남자들"
+            android:elevation="6dp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/pretendard_regular"
+            android:textSize="14dp"
+            android:textColor="#C52222"
+            android:layout_marginEnd="10dp"
+
+            app:layout_constraintBottom_toBottomOf="@+id/developer_btn"
+            app:layout_constraintEnd_toEndOf="@+id/developer_btn"
+            app:layout_constraintTop_toTopOf="@+id/developer_btn" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
