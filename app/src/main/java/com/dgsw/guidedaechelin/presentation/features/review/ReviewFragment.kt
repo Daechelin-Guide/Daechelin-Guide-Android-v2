@@ -7,9 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.FragmentReviewBinding
-import com.dgsw.guidedaechelin.domain.model.comment.CommentDto
-import com.dgsw.guidedaechelin.domain.model.rating.RatingDto
-import com.dgsw.guidedaechelin.domain.model.review.ReviewDto
+import com.dgsw.guidedaechelin.domain.model.RatingRequestModel
 import com.dgsw.guidedaechelin.presentation.base.BaseFragment
 import com.dgsw.guidedaechelin.presentation.features.meal.MealToReview
 import com.dgsw.guidedaechelin.presentation.utils.MealType
@@ -43,18 +41,20 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding,ReviewViewModel>(R.lay
 
             binding.reviewBtn.isEnabled = false
 
-            when(mealToReview.mealType){
+//            when(mealToReview.mealType){
+//
+//                MealType.BREAKFAST -> viewModel.postBreakfastReview(
+//                    date,RatingRequestModel(binding.starRating.rating.toInt(),binding.reviewTxt.text.toString())
+//                )
+//                MealType.LUNCH -> viewModel.postLunchReview(
+//                    date,RatingRequestModel(binding.starRating.rating.toInt(),binding.reviewTxt.text.toString())
+//                )
+//                MealType.DINNER -> viewModel.postDinnerReview(
+//                    date,RatingRequestModel(binding.starRating.rating.toInt(),binding.reviewTxt.text.toString())
+//                )
+//            }
 
-                MealType.BREAKFAST -> viewModel.postBreakfastReview(
-                    date,ReviewDto(binding.starRating.rating.toDouble(),binding.reviewTxt.text.toString())
-                )
-                MealType.LUNCH -> viewModel.postLunchReview(
-                    date,ReviewDto(binding.starRating.rating.toDouble(),binding.reviewTxt.text.toString())
-                )
-                MealType.DINNER -> viewModel.postDinnerReview(
-                    date,ReviewDto(binding.starRating.rating.toDouble(),binding.reviewTxt.text.toString())
-                )
-            }
+            viewModel.postReview(mealToReview.menuId, RatingRequestModel(binding.starRating.rating.toDouble(), binding.reviewTxt.text.toString()))
 
         }
 

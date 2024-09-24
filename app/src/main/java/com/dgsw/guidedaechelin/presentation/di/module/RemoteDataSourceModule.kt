@@ -15,17 +15,9 @@ abstract class RemoteDataSourceModule {
 
     @Singleton
     @Binds
-    abstract fun providesMealRemoteDataSource(
-        mealRemoteDataSourceImpl: MealRemoteDataSourceImpl
-    ): MealRemoteDataSource
-
-
-    @Singleton
-    @Binds
-    abstract fun providesCommentRemoteDataSource(
-        commentRemoteDataSourceImpl: CommentRemoteDataSourceImpl
-    ): CommentRemoteDataSource
-
+    abstract fun providesMenuRemoteDataSource(
+        menuRemoteDataSourceImpl: MenuRemoteDataSourceImpl
+    ): MenuRemoteDataSource
 
     @Singleton
     @Binds
@@ -35,19 +27,9 @@ abstract class RemoteDataSourceModule {
 
     @Singleton
     @Binds
-    abstract fun providesNewMealRemoteDataSource(
-        newMealRemoteDataSourceImpl: NewMealRemoteDataSourceImpl
-    ): NewMealRemoteDataSource
-
-    @Singleton
-    @Binds
-    abstract fun providesNewReviewRemoteDataSource(
-        newReviewRemoteDataSourceImpl: NewReviewRemoteDataSourceImpl
-    ): NewReviewRemoteDataSource
-
-    @Singleton
-    @Binds
     abstract fun providesRankingRemoteDataSource(
         rankingRemoteDataSourceImpl: RankingRemoteDataSourceImpl
     ): RankingRemoteDataSource
+
+
 }

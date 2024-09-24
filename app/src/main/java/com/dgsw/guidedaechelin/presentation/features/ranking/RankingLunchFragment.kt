@@ -40,7 +40,7 @@ class RankingLunchFragment : BaseFragment<FragmentLunchRankingBinding,RankingSha
             adapter = rankingMenuAdapter
         }
 
-        viewModel.getLunchRanking()
+        viewModel.getRanking(MealType.TYPE_LUNCH)
 
         rankingMenuAdapter.setItemClickListener(object :  RankingMenuAdapter.OnItemClickListener{
 
@@ -72,12 +72,12 @@ class RankingLunchFragment : BaseFragment<FragmentLunchRankingBinding,RankingSha
     }
 
     fun setLunchRanking(){
-        viewModel.lunchRankingList.map { it.mealType = MealType.LUNCH }
-
-        for ((index,value) in viewModel.lunchRankingList.withIndex()){
-
-            value.index = index+1
-        }
+//        viewModel.lunchRankingList.map { it.mealType = MealType.LUNCH }
+//
+//        for ((index,value) in viewModel.lunchRankingList.withIndex()){
+//
+//            value.index = index+1
+//        }
 
         rankingMenuAdapter.submitList(viewModel.lunchRankingList.toMutableList())
     }

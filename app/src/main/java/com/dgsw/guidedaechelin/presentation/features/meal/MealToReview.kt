@@ -9,6 +9,7 @@ data class MealToReview(
 
     val date : String,
     val menu : String,
-    val mealType: MealType
+    val mealType: MealType,
+    val menuId : Int
 
 ) : Parcelable

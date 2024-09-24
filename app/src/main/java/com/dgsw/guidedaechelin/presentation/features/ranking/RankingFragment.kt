@@ -11,9 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.FragmentRankingBinding
-import com.dgsw.guidedaechelin.domain.model.ranking.RankingItemModel
-import com.dgsw.guidedaechelin.domain.model.ranking.RankingModel
-import com.dgsw.guidedaechelin.domain.model.review.MenuModel
 import com.dgsw.guidedaechelin.presentation.base.BaseFragment
 import com.dgsw.guidedaechelin.presentation.features.home.HomeToMealData
 import com.dgsw.guidedaechelin.presentation.features.home.ViewPagerAdapter
@@ -22,8 +19,6 @@ import com.dgsw.guidedaechelin.presentation.features.meal.MealToReview
 import com.dgsw.guidedaechelin.presentation.features.meal.MealViewModel
 import com.dgsw.guidedaechelin.presentation.utils.MealType
 import com.dgsw.guidedaechelin.presentation.utils.repeatOnStarted
-import com.dgsw.guidedaechelin.remote.response.Menu
-import com.dgsw.guidedaechelin.remote.response.RankingItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
 
@@ -129,13 +124,13 @@ class RankingFragment : BaseFragment<FragmentRankingBinding,RankingViewModel>(R.
                 Log.d("최희건", "breakfast : ${event.ranking}")
                 viewModel.breakfastRanking = event.ranking
                 viewModel.rankingList.add(event.ranking)
-                viewModel.getLunchRanking()
+                viewModel.getRanking(MealType.TYPE_LUNCH)
             }
             is RankingViewModel.Event.SuccessGetLunchRanking -> {
                 Log.d("최희건", "lunch : ${event.ranking}")
                 viewModel.lunchRanking = event.ranking
                 viewModel.rankingList.add(event.ranking)
-                viewModel.getDinnerRanking()
+                viewModel.getRanking(MealType.TYPE_DINNER)
             }
             is RankingViewModel.Event.SuccessGetDinnerRanking -> {
                 Log.d("최희건", "dinner : ${event.ranking}")

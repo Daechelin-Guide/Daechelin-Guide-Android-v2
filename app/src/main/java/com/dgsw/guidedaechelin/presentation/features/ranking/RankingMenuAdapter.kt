@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.ItemRankingBinding
 import com.dgsw.guidedaechelin.databinding.PageRankingBinding
-import com.dgsw.guidedaechelin.domain.model.ranking.RankingItemModel
+import com.dgsw.guidedaechelin.domain.model.RankingItemModel
 import com.dgsw.guidedaechelin.presentation.base.BaseListAdapter
 import com.dgsw.guidedaechelin.presentation.features.home.ViewPagerAdapter
 import com.dgsw.guidedaechelin.presentation.features.meal.MealFragment
 import com.dgsw.guidedaechelin.presentation.utils.MealType
-import com.dgsw.guidedaechelin.remote.response.RankingItem
 
 class RankingMenuAdapter : BaseListAdapter<RankingItemModel,ItemRankingBinding>(R.layout.item_ranking) {
 
@@ -23,22 +22,22 @@ class RankingMenuAdapter : BaseListAdapter<RankingItemModel,ItemRankingBinding>(
 
     override fun action(data: RankingItemModel, binding: ItemRankingBinding) {
 
-        when(data.mealType){
+        when(data.mealType!!){
 
-            MealType.BREAKFAST -> {
+            MealType.TYPE_BREAKFAST -> {
                 binding.frame.background = orangeFrame
             }
-            MealType.LUNCH -> binding.frame.background = greenFrame
-            MealType.DINNER -> binding.frame.background = violetFrame
+            MealType.TYPE_LUNCH -> binding.frame.background = greenFrame
+            MealType.TYPE_DINNER -> binding.frame.background = violetFrame
 
         }
 
-        binding.titleTxt.text = "${data.index}"+"위 : "+ getParsedDate(data.date)
-        binding.menuTxt.text = data.menu.meal
-        binding.starRating.rating = data.star
+        binding.titleTxt.text = "${data.id}"+"위 : "+ getParsedDate(data.date!!)
+        binding.menuTxt.text = data.menu
+        binding.starRating.rating = data.totalScore!!.toFloat()
 
         binding.frame.setOnClickListener {
-            itemClickListener.onClick(data.mealType, data.date, data.menu.meal)
+            itemClickListener.onClick(data.mealType, data.date, data.menu!!)
         }
 
     }

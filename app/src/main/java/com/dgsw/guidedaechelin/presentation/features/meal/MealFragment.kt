@@ -2,14 +2,19 @@ package com.dgsw.guidedaechelin.presentation.features.meal
 
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.FragmentMealBinding
-import com.dgsw.guidedaechelin.domain.model.comment.Comment
-import com.dgsw.guidedaechelin.domain.model.review.ResponseModel
+import com.dgsw.guidedaechelin.domain.model.RatingItem
+import com.dgsw.guidedaechelin.domain.model.RatingModel
 import com.dgsw.guidedaechelin.presentation.base.BaseFragment
 import com.dgsw.guidedaechelin.presentation.features.home.HomeToMealData
 import com.dgsw.guidedaechelin.presentation.utils.MealType
 import com.dgsw.guidedaechelin.presentation.utils.repeatOnStarted
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fragment_meal){
@@ -20,8 +25,9 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
     private val commentAdapter : ReviewListAdapter by lazy { ReviewListAdapter() }
 
 //    private var commentDataSet = mutableListOf<Comment>()
-    private var commentDataSet = mutableListOf<ResponseModel>()
+    private var commentDataSet = mutableListOf<RatingItem>()
 
+    var menuId : Int = 0
 
 
     override fun start() {
@@ -29,7 +35,7 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
         val args: MealFragmentArgs by navArgs()
         val _homeToMeal = args.homeToMeal
 
-        viewModel.reviewed = 0
+        viewModel.reviewed = 2
 
         homeToMeal = _homeToMeal
 
@@ -45,18 +51,7 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
 
         setMeal(homeToMeal.mealType,homeToMeal.menu)
 
-        when(homeToMeal.mealType){
-            MealType.BREAKFAST -> {
-                viewModel.getBreakfastReview(viewModel.date)
-            }
-            MealType.LUNCH -> {
-                viewModel.getLunchReview(viewModel.date)
-
-            }
-            MealType.DINNER -> {
-                viewModel.getDinnerReview(viewModel.date)
-            }
-        }
+        viewModel.getRating(homeToMeal.mealType, viewModel.date)
 
     }
 
@@ -97,7 +92,7 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
                 }
                 2 -> {
                     Log.d("최희건", "리뷰한 적 없음")
-                    val action = MealFragmentDirections.actionMealFragmentToReviewFragment(MealToReview(viewModel.date,homeToMeal.menu,homeToMeal.mealType))
+                    val action = MealFragmentDirections.actionMealFragmentToReviewFragment(MealToReview(viewModel.date,homeToMeal.menu,homeToMeal.mealType,menuId))
                     findNavController().navigate(action)
                 }
             }
@@ -113,9 +108,9 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
     private fun setMeal(mealType: MealType, menu : String){
 
         val index = when(mealType){
-            MealType.BREAKFAST -> 0
-            MealType.LUNCH -> 1
-            MealType.DINNER -> 2
+            MealType.TYPE_BREAKFAST -> 0
+            MealType.TYPE_LUNCH -> 1
+            MealType.TYPE_DINNER -> 2
         }
 
         val frameList : Array<Int> = arrayOf(R.drawable.orange_frame, R.drawable.green_frame,R.drawable.violet_frame)
@@ -128,7 +123,7 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
         binding.line.background = resources.getDrawable(textboxList[index])
         binding.reviewBtn.background = resources.getDrawable(buttonList[index])
         binding.mealTypeTxt.text = mealTypeList[index]
-        binding.mealTxt.text = menu.replace(",","\n")
+        binding.mealTxt.text = menu.replace(" ","\n")
 
     }
 
@@ -137,9 +132,9 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
         binding.starRating.rating = rating.toFloat()
     }
 
-    private fun setReview(reviews : List<ResponseModel>){
+    private fun setReview(reviews : List<RatingItem>){
         commentDataSet = reviews.toMutableList()
-        commentDataSet.removeIf{ x -> x.message.isBlank() }
+        commentDataSet.removeIf{ x -> x.comment.isBlank() }
         commentAdapter.submitList(commentDataSet)
     }
 
@@ -154,10 +149,11 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
     private fun handleEvent(event: MealViewModel.Event) =
         when (event) {
 
-            is MealViewModel.Event.successGetReview -> {
-                Log.d("최희건","reviews - ${event.review.response}")
-                setReview(event.review.response)
-                setRating(event.review.totalStar.toDouble())
+            is MealViewModel.Event.successGetRating -> {
+                Log.d("최희건","reviews - ${event.rating.rating}")
+                setReview(event.rating.rating)
+                menuId = event.rating.id
+                setRating(event.rating.score)
             }
 
             is MealViewModel.Event.SuccessisReviewed -> {

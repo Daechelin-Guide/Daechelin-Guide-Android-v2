@@ -22,10 +22,10 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="20dp"
-        android:text="쇠고기야채죽,*모닝빵크래미샌드위치, 나박김치,허쉬초코크런치시리얼+우유,바나나"
+        android:text="급식을 불러오고 있습니다..."
         android:gravity="center_vertical"
         android:fontFamily="@font/pretendard_medium"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textColor="@color/widget_textcolor"
         />
 

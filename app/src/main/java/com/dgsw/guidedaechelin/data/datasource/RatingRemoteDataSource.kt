@@ -1,21 +1,24 @@
 package com.dgsw.guidedaechelin.data.datasource
 
-import com.dgsw.guidedaechelin.domain.model.rating.Rating
-import com.dgsw.guidedaechelin.domain.model.rating.RatingDto
+import com.dgsw.guidedaechelin.remote.request.RatingRequestDto
+import com.dgsw.guidedaechelin.remote.response.MenuDetailResponseDto
+import com.dgsw.guidedaechelin.remote.response.MenuResponseDto
+import com.dgsw.guidedaechelin.remote.response.RatingResponseDto
+
 
 interface RatingRemoteDataSource {
 
     suspend fun getRating(
 
-        menu : String
+        menuId : Int
 
-    ) : Rating
+    ) : List<RatingResponseDto>
 
-    suspend fun postRating(
+    suspend fun postRating (
 
-        post : RatingDto
+        menuId: Int,
+        request : RatingRequestDto
 
-    ) : Rating
-
+    )
 
 }

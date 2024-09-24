@@ -1,23 +1,18 @@
 package com.dgsw.guidedaechelin.data.datasource
 
-import com.dgsw.guidedaechelin.remote.response.RankingBreakfastResponse
-import com.dgsw.guidedaechelin.remote.response.RankingDinnerResponse
-import com.dgsw.guidedaechelin.remote.response.RankingLunchResponse
-import retrofit2.http.GET
+import com.dgsw.guidedaechelin.presentation.utils.MealType
+import com.dgsw.guidedaechelin.remote.response.MenuDetailResponseDto
+import com.dgsw.guidedaechelin.remote.response.MenuResponseDto
+import com.dgsw.guidedaechelin.remote.response.RankingResponseDto
+import com.dgsw.guidedaechelin.remote.response.RatingResponseDto
+
 
 interface RankingRemoteDataSource {
 
-    suspend fun getBreakfastRanking(
+    suspend fun getRanking(
 
-    ): RankingBreakfastResponse
+        mealType: String
 
-    suspend fun getLunchRanking(
-
-    ): RankingLunchResponse
-
-    suspend fun getDinnerRanking(
-
-    ): RankingDinnerResponse
-
+    ) : RankingResponseDto
 
 }

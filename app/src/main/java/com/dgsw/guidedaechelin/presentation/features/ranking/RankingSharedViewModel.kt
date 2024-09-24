@@ -2,9 +2,9 @@ package com.dgsw.guidedaechelin.presentation.features.ranking
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.dgsw.guidedaechelin.domain.model.ranking.RankingItemModel
-import com.dgsw.guidedaechelin.domain.model.ranking.RankingModel
-import com.dgsw.guidedaechelin.domain.repository.ranking.RankingRepository
+import com.dgsw.guidedaechelin.domain.model.RankingItemModel
+import com.dgsw.guidedaechelin.domain.model.RankingModel
+import com.dgsw.guidedaechelin.domain.repository.RankingRepository
 import com.dgsw.guidedaechelin.presentation.base.BaseViewModel
 import com.dgsw.guidedaechelin.presentation.utils.MealType
 import com.dgsw.guidedaechelin.presentation.utils.MutableEventFlow
@@ -35,75 +35,104 @@ class RankingSharedViewModel @Inject constructor(
         }
     }
 
-    fun getBreakfastRanking() = viewModelScope.launch(Dispatchers.IO) {
+    fun getRanking(mealType: MealType) = viewModelScope.launch(Dispatchers.IO) {
 
         kotlin.runCatching{
 
-            rankingRepository.getBreakfastRanking()
+            rankingRepository.getRanking(mealType)
 
         }.onSuccess {
 
-            breakfastRankingList = it.response.toMutableList()
-
-
-
-            event(RankingSharedViewModel.Event.SuccessGetBreakfastRanking(it))
-
-        }.onFailure {
-            event(RankingSharedViewModel.Event.UnknownException)
-            Log.d("오류","$it")
-        }
-    }
-
-    fun getLunchRanking() = viewModelScope.launch(Dispatchers.IO) {
-
-        kotlin.runCatching{
-
-            rankingRepository.getLunchRanking()
-
-        }.onSuccess {
-
-            lunchRankingList = it.response.toMutableList()
-
-            lunchRankingList.map { it.mealType = MealType.LUNCH }
-
-            for ((index,value) in lunchRankingList.withIndex()){
-
-                value.index = index+1
+            when(mealType){
+                MealType.TYPE_BREAKFAST -> {
+                    breakfastRankingList = it.ranking.toMutableList()
+                    event(RankingSharedViewModel.Event.SuccessGetBreakfastRanking(it))
+                }
+                MealType.TYPE_LUNCH -> {
+                    lunchRankingList = it.ranking.toMutableList()
+                    event(RankingSharedViewModel.Event.SuccessGetLunchRanking(it))
+                }
+                MealType.TYPE_DINNER -> {
+                    dinnerRankingList = it.ranking.toMutableList()
+                    event(RankingSharedViewModel.Event.SuccessGetDinnerRanking(it))
+                }
             }
 
-            event(RankingSharedViewModel.Event.SuccessGetLunchRanking(it))
-
         }.onFailure {
             event(RankingSharedViewModel.Event.UnknownException)
             Log.d("오류","$it")
         }
     }
 
-    fun getDinnerRanking() = viewModelScope.launch(Dispatchers.IO) {
-
-        kotlin.runCatching{
-
-            rankingRepository.getDinnerRanking()
-
-        }.onSuccess {
-
-            dinnerRankingList = it.response.toMutableList()
-
-            dinnerRankingList.map { it.mealType = MealType.DINNER }
-
-            for ((index,value) in dinnerRankingList.withIndex()){
-
-                value.index = index+1
-            }
-
-            event(RankingSharedViewModel.Event.SuccessGetDinnerRanking(it))
-
-        }.onFailure {
-            event(RankingSharedViewModel.Event.UnknownException)
-            Log.d("오류","$it")
-        }
-    }
+//    fun getBreakfastRanking() = viewModelScope.launch(Dispatchers.IO) {
+//
+//        kotlin.runCatching{
+//
+//            rankingRepository.getRanking(MealType.BREAKFAST)
+//
+//        }.onSuccess {
+//
+//            breakfastRankingList = it.ranking.toMutableList()
+//
+//
+//
+//            event(RankingSharedViewModel.Event.SuccessGetBreakfastRanking(it))
+//
+//        }.onFailure {
+//            event(RankingSharedViewModel.Event.UnknownException)
+//            Log.d("오류","$it")
+//        }
+//    }
+//
+//    fun getLunchRanking() = viewModelScope.launch(Dispatchers.IO) {
+//
+//        kotlin.runCatching{
+//
+//            rankingRepository.getLunchRanking()
+//
+//        }.onSuccess {
+//
+////            lunchRankingList = it.response.toMutableList()
+////
+////            lunchRankingList.map { it.mealType = MealType.LUNCH }
+////
+////            for ((index,value) in lunchRankingList.withIndex()){
+////
+////                value.index = index+1
+////            }
+//
+//            event(RankingSharedViewModel.Event.SuccessGetLunchRanking(it))
+//
+//        }.onFailure {
+//            event(RankingSharedViewModel.Event.UnknownException)
+//            Log.d("오류","$it")
+//        }
+//    }
+//
+//    fun getDinnerRanking() = viewModelScope.launch(Dispatchers.IO) {
+//
+//        kotlin.runCatching{
+//
+//            rankingRepository.getDinnerRanking()
+//
+//        }.onSuccess {
+//
+//            dinnerRankingList = it.response.toMutableList()
+//
+//            dinnerRankingList.map { it.mealType = MealType.DINNER }
+//
+//            for ((index,value) in dinnerRankingList.withIndex()){
+//
+//                value.index = index+1
+//            }
+//
+//            event(RankingSharedViewModel.Event.SuccessGetDinnerRanking(it))
+//
+//        }.onFailure {
+//            event(RankingSharedViewModel.Event.UnknownException)
+//            Log.d("오류","$it")
+//        }
+//    }
 
 
 

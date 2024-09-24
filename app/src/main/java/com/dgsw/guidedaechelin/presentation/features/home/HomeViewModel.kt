@@ -2,10 +2,8 @@ package com.dgsw.guidedaechelin.presentation.features.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.dgsw.guidedaechelin.domain.model.meal.Meal
-import com.dgsw.guidedaechelin.domain.model.meal.NewMeal
-import com.dgsw.guidedaechelin.domain.repository.meal.MealRepository
-import com.dgsw.guidedaechelin.domain.repository.meal.NewMealRepository
+import com.dgsw.guidedaechelin.domain.model.MenuModel
+import com.dgsw.guidedaechelin.domain.repository.MenuRepository
 import com.dgsw.guidedaechelin.presentation.base.BaseViewModel
 import com.dgsw.guidedaechelin.presentation.utils.MutableEventFlow
 import com.dgsw.guidedaechelin.presentation.utils.asEventFlow
@@ -18,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 
-    private val mealRepository: MealRepository,
-    private val newMealRepository: NewMealRepository
+    private val menuRepository: MenuRepository
 
 ) : BaseViewModel() {
 
@@ -48,10 +45,11 @@ class HomeViewModel @Inject constructor(
 
     }
 
-    fun getNewMeal(year : String, month : String, day : String, position : Int) = viewModelScope.launch(Dispatchers.IO) {
+    fun getNewMeal(date : String, position : Int) = viewModelScope.launch(Dispatchers.IO) {
 
         kotlin.runCatching {
-            newMealRepository.getMenu(year, month, day)
+//            newMealRepository.getMenu(date)
+            menuRepository.getMenu(date)
         }.onSuccess {
             event(Event.SuccessGetNewMeal(it,position))
         }.onFailure {
@@ -81,7 +79,7 @@ class HomeViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class SuccessGetNewMeal(val meal : NewMeal, val position : Int) : Event()
+        data class SuccessGetNewMeal(val meal : MenuModel, val position : Int) : Event()
 //        data class SuccessGetMeal(val meal : Meal, val position : Int) : Event()
         object UnknownException : Event()
     }

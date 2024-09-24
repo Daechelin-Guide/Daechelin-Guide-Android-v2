@@ -66,7 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
 
                 val action = HomeFragmentDirections.actionHomeFragmentToMealFragment(
                     HomeToMealData(
-                        mealType = MealType.BREAKFAST,
+                        mealType = MealType.TYPE_BREAKFAST,
                         date = "${date.toString().replace("-", "/")} (${getWeek(date)})",
                         menu = menu
                     ))
@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
 
                 val action = HomeFragmentDirections.actionHomeFragmentToMealFragment(
                     HomeToMealData(
-                        mealType = MealType.LUNCH,
+                        mealType = MealType.TYPE_LUNCH,
                         date = "${date.toString().replace("-", "/")} (${getWeek(date)})",
                         menu = menu
                     ))
@@ -92,7 +92,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
 
                 val action = HomeFragmentDirections.actionHomeFragmentToMealFragment(
                     HomeToMealData(
-                        mealType = MealType.DINNER,
+                        mealType = MealType.TYPE_DINNER,
                         date = "${date.toString().replace("-", "/")} (${getWeek(date)})",
                         menu = menu
                     ))
@@ -131,7 +131,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
 
         val todayDate = viewModel.localDate.plusDays(viewModel.list[binding.viewPagerContainer.currentItem].cal.toLong())
         val date = todayDate.toString()
-        viewModel.getNewMeal(date.slice(IntRange(0,3)),date.slice(IntRange(5,6)),date.slice(IntRange(8,9)),binding.viewPagerContainer.currentItem)
+        viewModel.getNewMeal(date.slice(IntRange(0,3))+date.slice(IntRange(5,6))+date.slice(IntRange(8,9)),binding.viewPagerContainer.currentItem)
 
 
         Log.d("최희건 - list ","${viewModel.list}")
@@ -181,7 +181,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
             if(viewModel.list[position].breakfast == "급식 정보 불러오는 중..." &&
                 viewModel.list[position].lunch == "급식 정보 불러오는 중..." &&
                 viewModel.list[position].dinner == "급식 정보 불러오는 중..." ){
-                viewModel.getNewMeal(date.slice(IntRange(0,3)),date.slice(IntRange(5,6)),date.slice(IntRange(8,9)),position)
+                viewModel.getNewMeal(date.slice(IntRange(0,3))+date.slice(IntRange(5,6))+date.slice(IntRange(8,9)),position)
 
             }
 
@@ -204,18 +204,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
                 Log.d("최희건 - 리스트 요소" ,"${viewModel.list}")
             }
             is HomeViewModel.Event.UnknownException -> Log.d("테스트", "EXCEPTION")
-//            is HomeViewModel.Event.SuccessGetMeal -> {
-//                Log.d("최희건 - getMeal", "${event.meal}")
-//
-//                viewModel.list[event.position].breakfast = event.meal.breakfast ?: "급식 정보가 없습니다"
-//                viewModel.list[event.position].lunch = event.meal.lunch ?: "급식 정보가 없습니다"
-//                viewModel.list[event.position].dinner = event.meal.dinner ?: "급식 정보가 없습니다"
-//
-//                viewPagerAdapter.submitList(viewModel.list.toMutableList())
-//                viewPagerAdapter.notifyItemChanged(event.position)
-//
-//                Log.d("최희건 - 리스트 요소" ,"${viewModel.list}")
-//            }
 
         }
 

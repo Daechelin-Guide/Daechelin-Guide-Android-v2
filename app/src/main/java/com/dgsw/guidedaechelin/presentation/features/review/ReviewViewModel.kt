@@ -2,14 +2,8 @@ package com.dgsw.guidedaechelin.presentation.features.review
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.dgsw.guidedaechelin.domain.model.comment.CommentDto
-import com.dgsw.guidedaechelin.domain.model.comment.LocalReview
-import com.dgsw.guidedaechelin.domain.model.rating.RatingDto
-import com.dgsw.guidedaechelin.domain.model.review.ReviewDto
-import com.dgsw.guidedaechelin.domain.repository.comment.CommentRepository
-import com.dgsw.guidedaechelin.domain.repository.comment.LocalReviewRepository
-import com.dgsw.guidedaechelin.domain.repository.meal.RatingRepository
-import com.dgsw.guidedaechelin.domain.repository.review.NewReviewRepository
+import com.dgsw.guidedaechelin.domain.model.RatingRequestModel
+import com.dgsw.guidedaechelin.domain.repository.RatingRepository
 import com.dgsw.guidedaechelin.presentation.base.BaseViewModel
 import com.dgsw.guidedaechelin.presentation.utils.MealType
 import com.dgsw.guidedaechelin.presentation.utils.MutableEventFlow
@@ -22,10 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
 
-    private val commentRepository: CommentRepository,
-    private val ratingRepository: RatingRepository,
-    private val newReviewRepository: NewReviewRepository,
-    private val localReviewRepository: LocalReviewRepository
+    private val ratingRepository: RatingRepository
 
 ): BaseViewModel() {
 
@@ -56,10 +47,47 @@ class ReviewViewModel @Inject constructor(
 //        }
 //    }
 
-    fun postBreakfastReview(date : String, reviewDto: ReviewDto) = viewModelScope.launch(Dispatchers.IO) {
+//    fun postBreakfastReview(date : String, reviewDto: RatingRequestModel) = viewModelScope.launch(Dispatchers.IO) {
+//
+//        kotlin.runCatching{
+//            newReviewRepository.postBreakfastReview(date, reviewDto)
+//
+//        }.onSuccess {
+//            event(ReviewViewModel.Event.SuccessPostReview)
+//        }.onFailure {
+//            event(ReviewViewModel.Event.UnknownException)
+//            Log.d("오류","$it")
+//        }
+//    }
+//
+//    fun postLunchReview(date : String, reviewDto: RatingRequestModel) = viewModelScope.launch(Dispatchers.IO) {
+//
+//        kotlin.runCatching{
+//            newReviewRepository.postLunchReview(date, reviewDto)
+//        }.onSuccess {
+//            event(ReviewViewModel.Event.SuccessPostReview)
+//        }.onFailure {
+//            event(ReviewViewModel.Event.UnknownException)
+//            Log.d("오류","$it")
+//        }
+//    }
+//
+//    fun postDinnerReview(date : String, reviewDto: RatingRequestModel) = viewModelScope.launch(Dispatchers.IO) {
+//
+//        kotlin.runCatching{
+//            newReviewRepository.postDinnerReview(date, reviewDto)
+//        }.onSuccess {
+//            event(ReviewViewModel.Event.SuccessPostReview)
+//        }.onFailure {
+//            event(ReviewViewModel.Event.UnknownException)
+//            Log.d("오류","$it")
+//        }
+//    }
+
+    fun postReview(menuId : Int, rating: RatingRequestModel) = viewModelScope.launch(Dispatchers.IO) {
 
         kotlin.runCatching{
-            newReviewRepository.postBreakfastReview(date, reviewDto)
+            ratingRepository.postRating(menuId, rating)
         }.onSuccess {
             event(ReviewViewModel.Event.SuccessPostReview)
         }.onFailure {
@@ -67,35 +95,10 @@ class ReviewViewModel @Inject constructor(
             Log.d("오류","$it")
         }
     }
-
-    fun postLunchReview(date : String, reviewDto: ReviewDto) = viewModelScope.launch(Dispatchers.IO) {
-
-        kotlin.runCatching{
-            newReviewRepository.postLunchReview(date, reviewDto)
-        }.onSuccess {
-            event(ReviewViewModel.Event.SuccessPostReview)
-        }.onFailure {
-            event(ReviewViewModel.Event.UnknownException)
-            Log.d("오류","$it")
-        }
-    }
-
-    fun postDinnerReview(date : String, reviewDto: ReviewDto) = viewModelScope.launch(Dispatchers.IO) {
-
-        kotlin.runCatching{
-            newReviewRepository.postDinnerReview(date, reviewDto)
-        }.onSuccess {
-            event(ReviewViewModel.Event.SuccessPostReview)
-        }.onFailure {
-            event(ReviewViewModel.Event.UnknownException)
-            Log.d("오류","$it")
-        }
-    }
-
     fun insertReview(date : String, mealType: MealType) = viewModelScope.launch(Dispatchers.IO) {
 
         kotlin.runCatching{
-            localReviewRepository.insertReview(LocalReview(date,mealType,true))
+//            localReviewRepository.insertReview(LocalReview(date,mealType,true))
         }.onSuccess {
             event(ReviewViewModel.Event.SuccessInsertReview)
         }.onFailure {

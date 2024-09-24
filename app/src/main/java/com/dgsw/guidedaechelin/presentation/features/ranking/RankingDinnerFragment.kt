@@ -31,7 +31,7 @@ class RankingDinnerFragment : BaseFragment<FragmentDinnerRankingBinding,RankingS
             adapter = rankingMenuAdapter
         }
 
-        viewModel.getDinnerRanking()
+        viewModel.getRanking(MealType.TYPE_DINNER)
 
         rankingMenuAdapter.setItemClickListener(object :  RankingMenuAdapter.OnItemClickListener{
 
@@ -63,12 +63,12 @@ class RankingDinnerFragment : BaseFragment<FragmentDinnerRankingBinding,RankingS
     }
 
     fun setDinnerRanking(){
-        viewModel.dinnerRankingList.map { it.mealType = MealType.DINNER }
-
-        for ((index,value) in viewModel.dinnerRankingList.withIndex()){
-
-            value.index = index+1
-        }
+//        viewModel.dinnerRankingList.map { it.mealType = MealType.DINNER }
+//
+//        for ((index,value) in viewModel.dinnerRankingList.withIndex()){
+//
+//            value.index = index+1
+//        }
 
         rankingMenuAdapter.submitList(viewModel.dinnerRankingList.toMutableList())
     }

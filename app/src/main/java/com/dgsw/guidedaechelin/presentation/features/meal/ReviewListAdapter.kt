@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.ItemReviewBinding
-import com.dgsw.guidedaechelin.domain.model.comment.Comment
-import com.dgsw.guidedaechelin.domain.model.review.ResponseModel
+import com.dgsw.guidedaechelin.domain.model.RatingItem
+import com.dgsw.guidedaechelin.domain.model.RatingModel
 import com.dgsw.guidedaechelin.presentation.base.BaseListAdapter
 
 
-class ReviewListAdapter : BaseListAdapter<ResponseModel,ItemReviewBinding>(R.layout.item_review) {
+class ReviewListAdapter : BaseListAdapter<RatingItem,ItemReviewBinding>(R.layout.item_review) {
 
     private val animalList = arrayListOf<AnimalData>().apply {
         add(AnimalData(R.drawable.group_191,"코끼리"))
@@ -82,14 +82,14 @@ class ReviewListAdapter : BaseListAdapter<ResponseModel,ItemReviewBinding>(R.lay
     )
 
 
-    override fun action(data: ResponseModel, binding: ItemReviewBinding) {
+    override fun action(data: RatingItem, binding: ItemReviewBinding) {
 
         binding.peopleIcon.background =binding.root.resources.getDrawable(animalList[encrypteAnimal(data.id)].drawable)
         binding.writerTxt.text = animalList[ encrypteAnimal(data.id) ].animal
 
         binding.adTxt.text = adverbList[ encrypteAdverb(data.id) ]
 
-        binding.commentTxt.text = data.message
+        binding.commentTxt.text = data.comment
 
     }
 
