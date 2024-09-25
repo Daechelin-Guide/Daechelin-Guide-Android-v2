@@ -131,7 +131,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
 
         val todayDate = viewModel.localDate.plusDays(viewModel.list[binding.viewPagerContainer.currentItem].cal.toLong())
         val date = todayDate.toString()
-        viewModel.getNewMeal(date.slice(IntRange(0,3))+date.slice(IntRange(5,6))+date.slice(IntRange(8,9)),binding.viewPagerContainer.currentItem)
+        viewModel.getMenu(date.slice(IntRange(0,3))+date.slice(IntRange(5,6))+date.slice(IntRange(8,9)),binding.viewPagerContainer.currentItem)
 
 
         Log.d("최희건 - list ","${viewModel.list}")
@@ -181,7 +181,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fr
             if(viewModel.list[position].breakfast == "급식 정보 불러오는 중..." &&
                 viewModel.list[position].lunch == "급식 정보 불러오는 중..." &&
                 viewModel.list[position].dinner == "급식 정보 불러오는 중..." ){
-                viewModel.getNewMeal(date.slice(IntRange(0,3))+date.slice(IntRange(5,6))+date.slice(IntRange(8,9)),position)
+                viewModel.getMenu(date.slice(IntRange(0,3))+date.slice(IntRange(5,6))+date.slice(IntRange(8,9)),position)
 
             }
 

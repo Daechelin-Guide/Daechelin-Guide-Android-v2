@@ -24,7 +24,7 @@ class NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://3.34.183.56:8080")
+            .baseUrl("https://dummyjson.com")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -65,4 +65,11 @@ class NetworkModule {
     @Singleton
     fun provideRankingApi( @SecondRemoteRetrofit retrofit: Retrofit): RankingService =
         retrofit.create(RankingService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideReportApi( @FirstRemoteRetrofit retrofit: Retrofit): ReportService =
+        retrofit.create(ReportService::class.java)
+
+
 }

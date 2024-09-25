@@ -3,9 +3,11 @@ package com.dgsw.guidedaechelin.presentation.di.module
 import com.dgsw.guidedaechelin.data.repository.MenuRepositoryImpl
 import com.dgsw.guidedaechelin.data.repository.RankingRepositoryImpl
 import com.dgsw.guidedaechelin.data.repository.RatingRepositoryImpl
+import com.dgsw.guidedaechelin.data.repository.ReportRepositoryImpl
 import com.dgsw.guidedaechelin.domain.repository.MenuRepository
 import com.dgsw.guidedaechelin.domain.repository.RankingRepository
 import com.dgsw.guidedaechelin.domain.repository.RatingRepository
+import com.dgsw.guidedaechelin.domain.repository.ReportRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +45,15 @@ object RepositoryModule {
 
     ): RankingRepository {
         return rankingRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideReportRepository(
+
+        reportRepositoryImpl: ReportRepositoryImpl
+
+    ): ReportRepository {
+        return reportRepositoryImpl
     }
 }

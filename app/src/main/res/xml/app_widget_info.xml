@@ -9,5 +9,5 @@
     android:resizeMode="horizontal|vertical"
     android:targetCellWidth="1"
     android:targetCellHeight="1"
-    android:updatePeriodMillis="1850000"
+    android:updatePeriodMillis="1805000"
     />

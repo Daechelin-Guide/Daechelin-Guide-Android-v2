@@ -42,13 +42,11 @@ class HomeViewModel @Inject constructor(
         for (i in 1..10000){
             list.add(0,HomeItemData(-i,"급식 정보 불러오는 중...","급식 정보 불러오는 중...","급식 정보 불러오는 중..."))
         }
-
     }
 
-    fun getNewMeal(date : String, position : Int) = viewModelScope.launch(Dispatchers.IO) {
+    fun getMenu(date : String, position : Int) = viewModelScope.launch(Dispatchers.IO) {
 
         kotlin.runCatching {
-//            newMealRepository.getMenu(date)
             menuRepository.getMenu(date)
         }.onSuccess {
             event(Event.SuccessGetNewMeal(it,position))
@@ -57,18 +55,6 @@ class HomeViewModel @Inject constructor(
             Log.d("오류","$it")
         }
     }
-//
-//    fun getMeal(year : String, month : String, day : String, position : Int) = viewModelScope.launch(Dispatchers.IO) {
-//
-//        kotlin.runCatching {
-//            mealRepository.getMeal(year, month, day)
-//        }.onSuccess {
-//            event(Event.SuccessGetMeal(it,position))
-//        }.onFailure {
-//            event(Event.UnknownException)
-//            Log.d("오류","$it")
-//        }
-//    }
 
 
     private fun event(event : Event){
@@ -80,7 +66,6 @@ class HomeViewModel @Inject constructor(
 
     sealed class Event {
         data class SuccessGetNewMeal(val meal : MenuModel, val position : Int) : Event()
-//        data class SuccessGetMeal(val meal : Meal, val position : Int) : Event()
         object UnknownException : Event()
     }
 

@@ -2,6 +2,8 @@ package com.dgsw.guidedaechelin.presentation.features.meal
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.ItemReviewBinding
 import com.dgsw.guidedaechelin.domain.model.RatingItem
@@ -9,7 +11,9 @@ import com.dgsw.guidedaechelin.domain.model.RatingModel
 import com.dgsw.guidedaechelin.presentation.base.BaseListAdapter
 
 
-class ReviewListAdapter : BaseListAdapter<RatingItem,ItemReviewBinding>(R.layout.item_review) {
+class ReviewListAdapter(
+    private val onReportClick : (reviewId : Int) -> Unit
+) : BaseListAdapter<RatingItem,ItemReviewBinding>(R.layout.item_review) {
 
     private val animalList = arrayListOf<AnimalData>().apply {
         add(AnimalData(R.drawable.group_191,"코끼리"))
@@ -82,7 +86,25 @@ class ReviewListAdapter : BaseListAdapter<RatingItem,ItemReviewBinding>(R.layout
     )
 
 
+
     override fun action(data: RatingItem, binding: ItemReviewBinding) {
+
+        fun showConfirmationDialog() {
+            val builder = AlertDialog.Builder(binding.root.context)
+            builder.setTitle("신고하기")
+            builder.setMessage("이 리뷰를 신고하시겠습니까?")
+
+            builder.setPositiveButton("예") { dialog, which ->
+                onReportClick(data.id)
+            }
+
+            builder.setNegativeButton("아니오") { dialog, which ->
+
+            }
+
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
 
         binding.peopleIcon.background =binding.root.resources.getDrawable(animalList[encrypteAnimal(data.id)].drawable)
         binding.writerTxt.text = animalList[ encrypteAnimal(data.id) ].animal
@@ -91,7 +113,15 @@ class ReviewListAdapter : BaseListAdapter<RatingItem,ItemReviewBinding>(R.layout
 
         binding.commentTxt.text = data.comment
 
+        binding.reviewLayout.setOnLongClickListener {
+            showConfirmationDialog()
+
+            return@setOnLongClickListener(true)
+        }
+
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return BaseViewHolder(ItemReviewBinding.inflate(LayoutInflater.from(parent.context),parent,false))

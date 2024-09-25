@@ -3,9 +3,9 @@ package com.dgsw.guidedaechelin.presentation.features.meal
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.dgsw.guidedaechelin.domain.model.RatingModel
 import com.dgsw.guidedaechelin.domain.model.RatingScoreModel
 import com.dgsw.guidedaechelin.domain.repository.RatingRepository
+import com.dgsw.guidedaechelin.domain.repository.ReportRepository
 import com.dgsw.guidedaechelin.presentation.base.BaseViewModel
 import com.dgsw.guidedaechelin.presentation.utils.MealType
 import com.dgsw.guidedaechelin.presentation.utils.MutableEventFlow
@@ -18,9 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MealViewModel @Inject constructor(
 
-//    private val localReviewRepository: LocalReviewRepository,
-//    private val newReviewRepository: NewReviewRepository
-    private val ratingRepository: RatingRepository
+    private val ratingRepository: RatingRepository,
+    private val reportRepository: ReportRepository
 
 ) : BaseViewModel(){
 
@@ -31,78 +30,32 @@ class MealViewModel @Inject constructor(
 
     var reviewed = 2
 
-//    fun getRating(menu : String) = viewModelScope.launch(Dispatchers.IO) {
-//
-//        kotlin.runCatching{
-//            ratingRepository.getRating(menu)
-//        }.onSuccess {
-//            event(Event.SuccessGetRating(it))
-//        }.onFailure {
-//            event(MealViewModel.Event.UnknownException)
-//            Log.d("오류","$it")
-//        }
-//    }
-//
-//    fun getReview(menu : String) = viewModelScope.launch(Dispatchers.IO) {
-//
-//        kotlin.runCatching{
-//            commentRepository.getComment(menu)
-//        }.onSuccess {
-//            event(Event.SuccessGetComment(it))
-//        }.onFailure {
-//            event(MealViewModel.Event.UnknownException)
-//            Log.d("오류","$it")
-//        }
-//    }
-
-    fun isReviewed(date : String, mealType: MealType) = viewModelScope.launch(Dispatchers.IO){
-//
-//        kotlin.runCatching {
-//            localReviewRepository.isReviewed(date, mealType)
-//        }.onSuccess {
-//            event(Event.SuccessisReviewed(it))
-//        }.onFailure {
-//            event(Event.UnknownException)
-//            Log.d("오류","$it")
-//        }
-    }
+    fun isReviewed(date : String, mealType: MealType) = viewModelScope.launch(Dispatchers.IO){}
 
     fun getRating(mealType: MealType, date : String) = viewModelScope.launch(Dispatchers.IO) {
 
         kotlin.runCatching{
-//            newReviewRepository.getBreakfastReview(date)
             ratingRepository.getRating(date, mealType)
         }.onSuccess {
-            event(Event.successGetRating(it))
+            event(Event.SuccessGetRating(it))
         }.onFailure {
             event(MealViewModel.Event.UnknownException)
             Log.d("오류","$it")
         }
     }
 
-//    fun getLunchReview(date : String) = viewModelScope.launch(Dispatchers.IO) {
-//
-//        kotlin.runCatching{
-//            newReviewRepository.getLunchReview(date)
-//        }.onSuccess {
-//            event(Event.successGetReview(it))
-//        }.onFailure {
-//            event(MealViewModel.Event.UnknownException)
-//            Log.d("오류","$it")
-//        }
-//    }
-//
-//    fun getDinnerReview(date : String) = viewModelScope.launch(Dispatchers.IO) {
-//
-//        kotlin.runCatching{
-//            newReviewRepository.getDinnerReview(date)
-//        }.onSuccess {
-//            event(Event.successGetReview(it))
-//        }.onFailure {
-//            event(MealViewModel.Event.UnknownException)
-//            Log.d("오류","$it")
-//        }
-//    }
+    fun reportReview(reviewId : Int) = viewModelScope.launch(Dispatchers.IO) {
+
+        kotlin.runCatching{
+            reportRepository.reportReview(reviewId)
+        }.onSuccess {
+            event(Event.SuccessReportReview)
+        }.onFailure {
+            event(MealViewModel.Event.UnknownException)
+            Log.d("오류","$it")
+        }
+    }
+
 
     private fun event(event : Event){
 
@@ -114,10 +67,9 @@ class MealViewModel @Inject constructor(
     sealed class Event {
 
 
-        data class successGetRating(val rating : RatingScoreModel) : Event()
-//        data class SuccessGetRating(val rating : Rating) : Event()
-//        data class SuccessGetComment(val comments : List<Comment>) : Event()
-        data class SuccessisReviewed(val isReviewed : Boolean) : Event()
+        data class SuccessGetRating(val rating : RatingScoreModel) : Event()
+        data class SuccessIsReviewed(val isReviewed : Boolean) : Event()
+        object SuccessReportReview : Event()
         object UnknownException : Event()
     }
 

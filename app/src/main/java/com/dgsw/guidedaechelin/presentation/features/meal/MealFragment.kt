@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.FragmentMealBinding
 import com.dgsw.guidedaechelin.domain.model.RatingItem
-import com.dgsw.guidedaechelin.domain.model.RatingModel
 import com.dgsw.guidedaechelin.presentation.base.BaseFragment
 import com.dgsw.guidedaechelin.presentation.features.home.HomeToMealData
 import com.dgsw.guidedaechelin.presentation.utils.MealType
@@ -22,7 +21,9 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
 
     lateinit var homeToMeal : HomeToMealData
 
-    private val commentAdapter : ReviewListAdapter by lazy { ReviewListAdapter() }
+    private val commentAdapter : ReviewListAdapter by lazy { ReviewListAdapter({
+        reviewId ->  viewModel.reportReview(reviewId)
+    }) }
 
 //    private var commentDataSet = mutableListOf<Comment>()
     private var commentDataSet = mutableListOf<RatingItem>()
@@ -73,6 +74,8 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
         }
 
         commentAdapter.submitList(commentDataSet)
+
+
 
         binding.mealTxt.text = "\n\n급식 정보를 불러오는 중입니다...\n\n"
 
@@ -149,18 +152,22 @@ class MealFragment : BaseFragment<FragmentMealBinding,MealViewModel>(R.layout.fr
     private fun handleEvent(event: MealViewModel.Event) =
         when (event) {
 
-            is MealViewModel.Event.successGetRating -> {
+            is MealViewModel.Event.SuccessGetRating -> {
                 Log.d("최희건","reviews - ${event.rating.rating}")
                 setReview(event.rating.rating)
                 menuId = event.rating.id
                 setRating(event.rating.score)
             }
 
-            is MealViewModel.Event.SuccessisReviewed -> {
+            is MealViewModel.Event.SuccessIsReviewed -> {
 
                 Log.d("최희건","isReviewed - ${event.isReviewed}")
                 setWriteButton(event.isReviewed)
 
+            }
+
+            is MealViewModel.Event.SuccessReportReview -> {
+                Toast.makeText(context,"신고가 정상적으로 접수되었습니다.", Toast.LENGTH_SHORT).show()
             }
 
             is MealViewModel.Event.UnknownException -> Log.d("오류우우우우ㅜ웅", "ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR")

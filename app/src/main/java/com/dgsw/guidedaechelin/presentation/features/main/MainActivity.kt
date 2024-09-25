@@ -8,6 +8,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.databinding.ActivityMainBinding
 import com.dgsw.guidedaechelin.presentation.base.BaseActivity
+import com.dgsw.guidedaechelin.presentation.features.terms.TermsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,18 +17,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.a
 
     override fun start() {
 
+        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val isTermsAccepted = sharedPreferences.getBoolean("isTermsAccepted", false)
 
-//        DailyAlarmScheduler.cancelAlarm(this)
-//        DailyAlarmScheduler.scheduleAlarms(this,this)
-
-//        AlarmScheduler.cancelAlarm(this)
-//        AlarmScheduler.scheduleAlarms(this, this)
-
-
-//        val serviceIntent = Intent(this, NotificationService::class.java)
-//        serviceIntent.putExtra("MealType", "BREAKFAST")
-//
-//        this.startService(serviceIntent)
+        if (!isTermsAccepted) {
+            // 사용 약관 화면으로 이동
+            val intent = Intent(this, TermsActivity::class.java)
+            startActivity(intent)
+            finish() // 메인 화면 종료
+        }
 
         installSplashScreen()
 

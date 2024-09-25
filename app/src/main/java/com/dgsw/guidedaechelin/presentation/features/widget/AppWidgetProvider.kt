@@ -1,60 +1,94 @@
 package com.dgsw.guidedaechelin.presentation.features.widget
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
 import com.dgsw.guidedaechelin.R
 import com.dgsw.guidedaechelin.domain.model.MenuModel
-import com.dgsw.guidedaechelin.domain.repository.MenuRepository
 import com.dgsw.guidedaechelin.presentation.features.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import javax.inject.Inject
+import java.util.concurrent.TimeUnit
+
+const val REPEAT_TIME : Long = 15
+const val NO_MENU_TEXT = "급식 정보가 없습니다"
 
 @AndroidEntryPoint
-class AppWidgetProvider : AppWidgetProvider(){
-    @Inject
-    lateinit var menuRepository: MenuRepository
+class AppWidgetProvider : AppWidgetProvider() {
 
+    val TAG = "AppWidgetProvider"
+
+    @SuppressLint("ScheduleExactAlarm")
     override fun onUpdate(
         context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
+        appWidgetManager: AppWidgetManager?,
+        appWidgetIds: IntArray?
     ) {
 
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val dateToday = LocalDate.now().format(formatter)
-        val dateTommorow = LocalDate.now().plusDays(1).format(formatter)
+        Log.d(TAG, "onUpdate: Start")
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val menuToday = async {
-                menuRepository.getMenu(date = dateToday.toString())
-            }
-            val menuTomorrow = async {
-                menuRepository.getMenu(date = dateTommorow.toString())
-            }
-            launch(Dispatchers.Main) {
-                updateWidget(context, appWidgetManager, appWidgetIds, menuToday.await(), menuTomorrow.await())
-            }
-        }
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, WidgetAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        // 알람 시간 설정 (예: 5초 후)
+        val triggerAtMillis = System.currentTimeMillis() + 1
+
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(triggerAtMillis, null)
+
+        alarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
+
+        Log.d(TAG, "onUpdate: Finish")
 
         super.onUpdate(context, appWidgetManager, appWidgetIds)
     }
 
-    private fun updateWidget(
+    override fun onEnabled(context: Context) {
+
+        super.onEnabled(context)
+
+//        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val intent = Intent(context, WidgetAlarmReceiver::class.java)
+//        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+//
+//        // 알람 시간 설정 (예: 5초 후)
+//        val triggerAtMillis = System.currentTimeMillis() + 5000
+//
+//        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
+
+
+
+//        Log.d(TAG, "onEnabled: Start")
+//
+//        val workManager = WorkManager.getInstance(context)
+//
+//        val periodicWorkRequest = PeriodicWorkRequestBuilder<MenuWorker>(REPEAT_TIME, TimeUnit.MINUTES)
+//            .setConstraints(
+//                Constraints.Builder()
+//                    .setRequiredNetworkType(NetworkType.CONNECTED)
+//                    .build()
+//            )
+//            .build()
+//
+//        workManager.enqueueUniquePeriodicWork(
+//            "MenuUpdateWorker",
+//            ExistingPeriodicWorkPolicy.REPLACE,
+//            periodicWorkRequest
+//        )
+    }
+
+    fun updateWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray,
+        appWidgetId: Int,
         menuToday: MenuModel,
         menuTomorrow: MenuModel
     ) {
@@ -67,61 +101,24 @@ class AppWidgetProvider : AppWidgetProvider(){
             )
             setOnClickPendingIntent(R.id.widget_frame, pendingIntent)
 
-            val date = LocalDateTime.now()
-            val currentTime = date.hour
+            // 위젯에 표시할 메뉴 데이터 설정
+            val currentTime = LocalDateTime.now().hour
 
             if (currentTime < 9) {
-
-                if(menuToday.breakfast == null){
-                    setTextViewText(R.id.widget_menu,"급식 정보가 없습니다")
-                }else{
-                    setTextViewText(R.id.widget_menu, menuToday.breakfast)
-                }
-                setImageViewResource(
-                    R.id.widget_img,
-                    R.drawable.orange_widget
-                )
-
+                setTextViewText(R.id.widget_menu, menuToday.breakfast ?: NO_MENU_TEXT)
+                setImageViewResource(R.id.widget_img, R.drawable.orange_widget)
             } else if (currentTime < 13) {
-
-                if(menuToday.lunch == null){
-                    setTextViewText(R.id.widget_menu,"급식 정보가 없습니다")
-                }else{
-                    setTextViewText(R.id.widget_menu, menuToday.lunch)
-                }
-                setImageViewResource(
-                    R.id.widget_img,
-                    R.drawable.green_widget
-                )
-
-            } else if (currentTime < 20){
-                if(menuToday.dinner == null){
-                    setTextViewText(R.id.widget_menu,"급식 정보가 없습니다")
-                }else{
-                    setTextViewText(R.id.widget_menu, menuToday.dinner)
-                }
-                setImageViewResource(
-                    R.id.widget_img,
-                    R.drawable.violet_widget
-                )
+                setTextViewText(R.id.widget_menu, menuToday.lunch ?: NO_MENU_TEXT)
+                setImageViewResource(R.id.widget_img, R.drawable.green_widget)
+            } else if (currentTime < 19) {
+                setTextViewText(R.id.widget_menu, menuToday.dinner ?: NO_MENU_TEXT)
+                setImageViewResource(R.id.widget_img, R.drawable.violet_widget)
             } else {
-                if(menuTomorrow.breakfast == null){
-                    setTextViewText(R.id.widget_menu,"급식 정보가 없습니다")
-                }else{
-                    setTextViewText(R.id.widget_menu, menuTomorrow.breakfast)
-                }
-                setImageViewResource(
-                    R.id.widget_img,
-                    R.drawable.orange_widget
-                )
+                setTextViewText(R.id.widget_menu, menuTomorrow.breakfast ?: NO_MENU_TEXT)
+                setImageViewResource(R.id.widget_img, R.drawable.orange_widget)
             }
         }
 
-        appWidgetIds.forEach { appWidgetId ->
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-        }
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
-
-
-
 }

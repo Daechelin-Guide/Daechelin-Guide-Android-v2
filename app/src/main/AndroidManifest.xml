@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dgsw.guidedaechelin"
-    android:versionCode="10"
-    android:versionName="2.2.6" >
+    android:versionCode="11"
+    android:versionName="2.2.7">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:name=".presentation.di.HiltApplication"
@@ -21,11 +21,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DaechelinGuide"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".presentation.features.terms.TermsActivity"
+            android:exported="false" />
 
         <receiver
             android:name=".presentation.features.widget.AppWidgetProvider"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -34,14 +37,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_info" />
         </receiver>
-
-        <service android:name=".presentation.features.main.NotificationService" />
-        <receiver android:name=".presentation.features.main.AlarmReceiver" />
+        <receiver
+            android:name=".presentation.features.widget.WidgetAlarmReceiver"
+            android:exported="true"></receiver>
 
         <activity
             android:name=".presentation.features.splash.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.DaechelinGuide" >
+            android:theme="@style/Theme.DaechelinGuide">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -52,14 +55,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".presentation.features.main.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.DaechelinGuide" >
+            android:theme="@style/Theme.DaechelinGuide">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
     </application>
 
 </manifest>
