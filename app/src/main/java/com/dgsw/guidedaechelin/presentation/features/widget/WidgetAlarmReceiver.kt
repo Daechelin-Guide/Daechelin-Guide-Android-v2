@@ -27,8 +27,6 @@ class WidgetAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        Log.d(TAG, "onReceive: ")
-
         fun getMenuAndUpdateWidget() {
             CoroutineScope(Dispatchers.IO).launch{
                 val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
