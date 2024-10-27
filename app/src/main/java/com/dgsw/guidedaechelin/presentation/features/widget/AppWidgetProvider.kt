@@ -33,20 +33,15 @@ class AppWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
 
-        Log.d(TAG, "onUpdate: Start")
-
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, WidgetAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-        // 알람 시간 설정 (예: 5초 후)
         val triggerAtMillis = System.currentTimeMillis() + 1
 
         val alarmClockInfo = AlarmManager.AlarmClockInfo(triggerAtMillis, null)
 
         alarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
-
-        Log.d(TAG, "onUpdate: Finish")
 
         super.onUpdate(context, appWidgetManager, appWidgetIds)
     }
@@ -54,35 +49,7 @@ class AppWidgetProvider : AppWidgetProvider() {
     override fun onEnabled(context: Context) {
 
         super.onEnabled(context)
-
-//        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val intent = Intent(context, WidgetAlarmReceiver::class.java)
-//        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//
-//        // 알람 시간 설정 (예: 5초 후)
-//        val triggerAtMillis = System.currentTimeMillis() + 5000
-//
-//        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent)
-
-
-
-//        Log.d(TAG, "onEnabled: Start")
-//
-//        val workManager = WorkManager.getInstance(context)
-//
-//        val periodicWorkRequest = PeriodicWorkRequestBuilder<MenuWorker>(REPEAT_TIME, TimeUnit.MINUTES)
-//            .setConstraints(
-//                Constraints.Builder()
-//                    .setRequiredNetworkType(NetworkType.CONNECTED)
-//                    .build()
-//            )
-//            .build()
-//
-//        workManager.enqueueUniquePeriodicWork(
-//            "MenuUpdateWorker",
-//            ExistingPeriodicWorkPolicy.REPLACE,
-//            periodicWorkRequest
-//        )
+        
     }
 
     fun updateWidget(
@@ -101,7 +68,6 @@ class AppWidgetProvider : AppWidgetProvider() {
             )
             setOnClickPendingIntent(R.id.widget_frame, pendingIntent)
 
-            // 위젯에 표시할 메뉴 데이터 설정
             val currentTime = LocalDateTime.now().hour
 
             if (currentTime < 9) {
